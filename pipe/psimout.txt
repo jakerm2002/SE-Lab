@@ -1,0 +1,254 @@
+Y86-64 Processor: PIPE
+328 bytes of code read
+
+Cycle = 0. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x0
+D: instr = nop, rA = ----, rB = ----, valC = 0x0, valP = 0x0, Stat = BUB, Stage PC = 0x0
+E: instr = nop, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+M: instr = nop, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+W: instr = nop, valE = 0x0, valM = 0x0, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0x0, f_instr = irmovq
+
+Cycle = 1. CC = Z=1 S=0 O=0, Stat = BUB
+F: predPC = 0xa
+D: instr = irmovq, rA = ----, rB = %rax, valC = 0xf5, valP = 0xa, Stat = AOK, Stage PC = 0x0
+E: instr = nop, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+M: instr = nop, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+W: instr = nop, valE = 0x0, valM = 0x0, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0xa, f_instr = irmovq
+
+Cycle = 2. CC = Z=1 S=0 O=0, Stat = BUB
+F: predPC = 0x14
+D: instr = irmovq, rA = ----, rB = %rbp, valC = 0x0, valP = 0x14, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0xf5, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = nop, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+W: instr = nop, valE = 0x0, valM = 0x0, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+	Execute: ALU: + 0xf5 0x0 --> 0xf5
+	Fetch: f_pc = 0x14, f_instr = rmmovq
+
+Cycle = 3. CC = Z=1 S=0 O=0, Stat = BUB
+F: predPC = 0x1e
+D: instr = rmmovq, rA = %rax, rB = %rbp, valC = 0xe0, valP = 0x1e, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0xf5, valA = 0x0
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = nop, valE = 0x0, valM = 0x0, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0x1e, f_instr = irmovq
+
+Cycle = 4. CC = Z=1 S=0 O=0, Stat = BUB
+F: predPC = 0x28
+D: instr = irmovq, rA = ----, rB = %rax, valC = 0xf7, valP = 0x28, Stat = AOK, Stage PC = 0x0
+E: instr = rmmovq, valC = 0xe0, valA = 0xf5, valB = 0x0
+   srcA = %rax, srcB = %rbp, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0xf5, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0xf5 to register %rax
+	Execute: ALU: + 0xe0 0x0 --> 0xe0
+	Fetch: f_pc = 0x28, f_instr = rmmovq
+
+Cycle = 5. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x32
+D: instr = rmmovq, rA = %rax, rB = %rbp, valC = 0xe8, valP = 0x32, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0xf7, valA = 0xe0, valB = 0xe0
+   srcA = ----, srcB = ----, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = rmmovq, Cnd = 0, valE = 0xe0, valA = 0xf5
+   dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0x0, valM = 0x0, dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x0 to register %rbp
+	Memory: Wrote 0xf5 to address 0xe0
+	Execute: ALU: + 0xf7 0x0 --> 0xf7
+	Fetch: f_pc = 0x32, f_instr = irmovq
+
+Cycle = 6. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x3c
+D: instr = irmovq, rA = ----, rB = %rax, valC = 0xfb, valP = 0x3c, Stat = AOK, Stage PC = 0x0
+E: instr = rmmovq, valC = 0xe8, valA = 0xf7, valB = 0x0
+   srcA = %rax, srcB = %rbp, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0xf7, valA = 0xe0
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = rmmovq, valE = 0xe0, valM = 0x0, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Execute: ALU: + 0xe8 0x0 --> 0xe8
+	Fetch: f_pc = 0x3c, f_instr = rmmovq
+
+Cycle = 7. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x46
+D: instr = rmmovq, rA = %rax, rB = %rbp, valC = 0xf0, valP = 0x46, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0xfb, valA = 0xe8, valB = 0xe8
+   srcA = ----, srcB = ----, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = rmmovq, Cnd = 0, valE = 0xe8, valA = 0xf7
+   dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0xf7, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0xf7 to register %rax
+	Memory: Wrote 0xf7 to address 0xe8
+	Execute: ALU: + 0xfb 0x0 --> 0xfb
+	Fetch: f_pc = 0x46, f_instr = irmovq
+
+Cycle = 8. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x50
+D: instr = irmovq, rA = ----, rB = %rax, valC = 0xff, valP = 0x50, Stat = AOK, Stage PC = 0x0
+E: instr = rmmovq, valC = 0xf0, valA = 0xfb, valB = 0x0
+   srcA = %rax, srcB = %rbp, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0xfb, valA = 0xe8
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = rmmovq, valE = 0xe8, valM = 0x0, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Execute: ALU: + 0xf0 0x0 --> 0xf0
+	Fetch: f_pc = 0x50, f_instr = rmmovq
+
+Cycle = 9. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x5a
+D: instr = rmmovq, rA = %rax, rB = %rbp, valC = 0xf8, valP = 0x5a, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0xff, valA = 0xf0, valB = 0xf0
+   srcA = ----, srcB = ----, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = rmmovq, Cnd = 0, valE = 0xf0, valA = 0xfb
+   dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0xfb, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0xfb to register %rax
+	Memory: Wrote 0xfb to address 0xf0
+	Execute: ALU: + 0xff 0x0 --> 0xff
+	Fetch: f_pc = 0x5a, f_instr = irmovq
+
+Cycle = 10. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x64
+D: instr = irmovq, rA = ----, rB = %rbp, valC = 0x100, valP = 0x64, Stat = AOK, Stage PC = 0x0
+E: instr = rmmovq, valC = 0xf8, valA = 0xff, valB = 0x0
+   srcA = %rax, srcB = %rbp, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0xff, valA = 0xf0
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = rmmovq, valE = 0xf0, valM = 0x0, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Execute: ALU: + 0xf8 0x0 --> 0xf8
+	Fetch: f_pc = 0x64, f_instr = irmovq
+
+Cycle = 11. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x6e
+D: instr = irmovq, rA = ----, rB = %rsp, valC = 0x10c, valP = 0x6e, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0x100, valA = 0xf8, valB = 0xf8
+   srcA = ----, srcB = ----, dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = rmmovq, Cnd = 0, valE = 0xf8, valA = 0xff
+   dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0xff, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0xff to register %rax
+	Memory: Wrote 0xff to address 0xf8
+	Execute: ALU: + 0x100 0x0 --> 0x100
+	Fetch: f_pc = 0x6e, f_instr = xorq
+
+Cycle = 12. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x70
+D: instr = xorq, rA = %rax, rB = %rax, valC = 0x0, valP = 0x70, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0x10c, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = %rsp, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0x100, valA = 0xf8
+   dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = rmmovq, valE = 0xf8, valM = 0x0, dstE = ----, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Execute: ALU: + 0x10c 0x0 --> 0x10c
+	Fetch: f_pc = 0x70, f_instr = irmovq
+
+Cycle = 13. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x7a
+D: instr = irmovq, rA = ----, rB = %rax, valC = 0x100, valP = 0x7a, Stat = AOK, Stage PC = 0x0
+E: instr = xorq, valC = 0x0, valA = 0xff, valB = 0xff
+   srcA = %rax, srcB = %rax, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0x10c, valA = 0x0
+   dstE = %rsp, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0x100, valM = 0x0, dstE = %rbp, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x100 to register %rbp
+	Execute: ALU: ^ 0xff 0xff --> 0x0
+	Execute: New cc=Z=1 S=0 O=0
+	Fetch: f_pc = 0x7a, f_instr = mrmovq
+
+Cycle = 14. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x84
+D: instr = mrmovq, rA = %rsp, rB = %rbp, valC = 0x4, valP = 0x84, Stat = AOK, Stage PC = 0x0
+E: instr = irmovq, valC = 0x100, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = xorq, Cnd = 0, valE = 0x0, valA = 0xff
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0x10c, valM = 0x0, dstE = %rsp, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x10c to register %rsp
+	Execute: ALU: + 0x100 0x0 --> 0x100
+	Fetch: f_pc = 0x84, f_instr = ret
+
+Cycle = 15. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x85
+D: instr = ret, rA = ----, rB = ----, valC = 0x0, valP = 0x85, Stat = AOK, Stage PC = 0x0
+E: instr = mrmovq, valC = 0x4, valA = 0x0, valB = 0x100
+   srcA = ----, srcB = %rbp, dstE = ----, dstM = %rsp, Stat = AOK, Stage PC = 0x0
+M: instr = irmovq, Cnd = 0, valE = 0x100, valA = 0x0
+   dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = addq, valE = 0x0, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x0 to register %rax
+	Execute: ALU: + 0x4 0x100 --> 0x104
+	Fetch: f_pc = 0x85, f_instr = rrmovq
+
+Cycle = 16. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x85
+D: instr = ret, rA = ----, rB = ----, valC = 0x0, valP = 0x85, Stat = AOK, Stage PC = 0x0
+E: instr = nop, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+M: instr = mrmovq, Cnd = 0, valE = 0x104, valA = 0x0
+   dstE = ----, dstM = %rsp, Stat = AOK, Stage PC = 0x0
+W: instr = irmovq, valE = 0x100, valM = 0x0, dstE = %rax, dstM = ----, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x100 to register %rax
+	Memory: Read 0x13100000000 from 0x104
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0x85, f_instr = rrmovq
+
+Cycle = 17. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x85
+D: instr = nop, rA = ----, rB = ----, valC = 0x0, valP = 0x0, Stat = BUB, Stage PC = 0x0
+E: instr = ret, valC = 0x0, valA = 0x13100000000, valB = 0x13100000000
+   srcA = %rsp, srcB = %rsp, dstE = %rsp, dstM = ----, Stat = AOK, Stage PC = 0x0
+M: instr = nop, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+W: instr = mrmovq, valE = 0x104, valM = 0x13100000000, dstE = ----, dstM = %rsp, Stat = AOK, Stage PC = 0x0
+	Writeback: Wrote 0x13100000000 to register %rsp
+	Execute: ALU: + 0x8 0x13100000000 --> 0x13100000008
+	Fetch: f_pc = 0x85, f_instr = rrmovq
+
+Cycle = 18. CC = Z=1 S=0 O=0, Stat = AOK
+F: predPC = 0x85
+D: instr = nop, rA = ----, rB = ----, valC = 0x0, valP = 0x0, Stat = BUB, Stage PC = 0x0
+E: instr = nop, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+M: instr = ret, Cnd = 0, valE = 0x13100000008, valA = 0x13100000000
+   dstE = %rsp, dstM = ----, Stat = AOK, Stage PC = 0x0
+W: instr = nop, valE = 0x0, valM = 0x0, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+	Memory: Couldn't Read from 0x13100000000
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0x85, f_instr = rrmovq
+
+Cycle = 19. CC = Z=1 S=0 O=0, Stat = BUB
+F: predPC = 0x85
+D: instr = nop, rA = ----, rB = ----, valC = 0x0, valP = 0x0, Stat = BUB, Stage PC = 0x0
+E: instr = nop, valC = 0x0, valA = 0x0, valB = 0x0
+   srcA = ----, srcB = ----, dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+M: instr = nop, Cnd = 0, valE = 0x0, valA = 0x0
+   dstE = ----, dstM = ----, Stat = BUB, Stage PC = 0x0
+W: instr = ret, valE = 0x13100000008, valM = 0x0, dstE = %rsp, dstM = ----, Stat = ADR, Stage PC = 0x0
+	Execute: ALU: + 0x0 0x0 --> 0x0
+	Fetch: f_pc = 0x0, f_instr = irmovq
+15 instructions executed
+Status = ADR
+Condition Codes: Z=1 S=0 O=0
+Changed Register State:
+%rax:	0x0000000000000000	0x0000000000000100
+%rsp:	0x0000000000000000	0x0000013100000000
+%rbp:	0x0000000000000000	0x0000000000000100
+Changed Memory State:
+0x00e0:	0x0000000000000000	0x00000000000000f5
+0x00e8:	0x0000000000000000	0x00000000000000f7
+0x00f0:	0x0000000000000000	0x00000000000000fb
+0x00f8:	0x0000000000000000	0x00000000000000ff
+PC = 0x84, Invalid stack address 0x13100000000
+ISA Check Succeeds
+CPI: 16 cycles/15 instructions = 1.07

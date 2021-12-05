@@ -804,14 +804,15 @@ void do_execute_stage()
 {
     /* some useful variables for logging purpose */
     bool setcc = false;
-    alu_t alufun = execute_output->ifun;
+    alu_t alufun = execute_output->icode == I_ALU ? execute_output->ifun : A_ADD;
     word_t alua, alub;
     alua = alub = 0;
 
     /* your implementation */
 
     //Set CC
-    if ( !(writeback_input->status == STAT_ADR || writeback_input->status == STAT_INS || writeback_input->status == STAT_HLT) && 
+    if ( execute_output->icode == I_ALU && 
+    !(writeback_input->status == STAT_ADR || writeback_input->status == STAT_INS || writeback_input->status == STAT_HLT) && 
     !(writeback_output->status == STAT_ADR || writeback_output->status == STAT_INS || writeback_output->status == STAT_HLT) ) {
         setcc = true;
     }
@@ -827,7 +828,7 @@ void do_execute_stage()
     memory_input->status = execute_output->status;
     memory_input->takebranch = 0;
 
-    cc_in = cc;
+    // cc_in = cc;
     bool cnd = false;
 
     switch (execute_output->icode) {
@@ -838,6 +839,7 @@ void do_execute_stage()
 
         case I_RRMOVQ: // aka CMOVQ
             cnd = cond_holds(cc, execute_output->ifun);
+            alua = execute_output->vala;
             memory_input->vale = execute_output->vala;
             if (!cnd) {
                 memory_input->deste = REG_NONE;
@@ -846,18 +848,25 @@ void do_execute_stage()
             break;
 
         case I_IRMOVQ:
+            alua = execute_output->valc;
             memory_input->vale = execute_output->valc;
             break;
 
         case I_RMMOVQ:
+            alua = execute_output->valc;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb + execute_output->valc;
             break;
 
         case I_MRMOVQ:
+            alua = execute_output->valc;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb + execute_output->valc;
             break;
 
         case I_ALU:
+            alua = execute_output->vala;
+            alub = execute_output->valb;
             memory_input->vale = compute_alu(execute_output->ifun, execute_output->vala, execute_output->valb);
             if (setcc) {
                 cc_in = compute_cc(execute_output->ifun, execute_output->vala, execute_output->valb);
@@ -870,18 +879,26 @@ void do_execute_stage()
             break;
 
         case I_CALL:
+            alua = -8;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb - 8;
             break;
 
         case I_RET:
+            alua = 8;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb + 8;
             break;
 
         case I_PUSHQ:
+            alua = -8;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb - 8;
             break;
 
         case I_POPQ:
+            alua = 8;
+            alub = execute_output->valb;
             memory_input->vale = execute_output->valb + 8;
             break;
 
@@ -916,6 +933,7 @@ void do_memory_stage()
     /* dummy placeholders, replace them with your implementation */
     mem_addr   = 0;
     mem_data   = 0;
+    word_t *mem_dest = 0;
     mem_write  = false;
     mem_read   = false;
     dmem_error = false;
@@ -948,7 +966,9 @@ void do_memory_stage()
         case I_MRMOVQ:
             mem_read = true;
             mem_addr = memory_output->vale;
-            dmem_error |= !get_word_val(mem, memory_output->vale, &writeback_input->valm);
+            mem_data = writeback_input->valm;
+            mem_dest = &writeback_input->valm;
+            // dmem_error |= !get_word_val(mem, mem_addr, &mem_data);
             break;
 
         case I_ALU: break;
@@ -962,7 +982,11 @@ void do_memory_stage()
             break;
 
         case I_RET:
-            dmem_error |= !get_word_val(mem, memory_output->vala, &writeback_input->valm);
+            mem_read = true;
+            mem_addr = memory_output->vala;
+            mem_data = writeback_input->valm;
+            mem_dest = &writeback_input->valm;
+            // dmem_error |= !get_word_val(mem, mem_addr, &mem_data);
             break;
 
         case I_PUSHQ:
@@ -972,7 +996,11 @@ void do_memory_stage()
             break;
 
         case I_POPQ:
-            dmem_error |= !get_word_val(mem, memory_output->vala, &writeback_input->valm);
+            mem_read = true;
+            mem_addr = memory_output->vala;
+            mem_data = writeback_input->valm;
+            mem_dest = &writeback_input->valm;
+            // dmem_error |= !get_word_val(mem, mem_addr, &mem_data);
             break;
 
         default:
@@ -981,12 +1009,12 @@ void do_memory_stage()
     }
 
     if (mem_read) {
-        if ((dmem_error |= !get_word_val(mem, mem_addr, &mem_data))) {
+        if ((dmem_error |= !get_word_val(mem, mem_addr, mem_dest))) {
             writeback_input->status = STAT_ADR;
             sim_log("\tMemory: Couldn't Read from 0x%llx\n", mem_addr);
         } else {
             sim_log("\tMemory: Read 0x%llx from 0x%llx\n",
-                mem_data, mem_addr);
+                *mem_dest, mem_addr);
         }
     }
 

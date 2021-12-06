@@ -1,2 +1,29 @@
-                            | # Design your own testcase here
-0x000: 00                   | halt
+                            | # This program explores the details of the Y86 convention when pushing data to stack.
+                            | # Normally, we would immediately decrement %rsp and then write to M[R[%rsp]].
+                            | # However, due to the structure of our pipeline, %rsp should only be updated in the writeback stage.
+                            | #
+                            | # In a suboptimal pipeline where data dependencies were not considered, this could cause a problem.
+                            | # If we had two consecutive operations, one being a pushq, and then an operation that
+                            | # reads the value of %rsp, then the pushq operation would not have time to reach the
+                            | # writeback stage and update the stack pointer. Therefore the value read from %rsp would be incorrect.
+                            | #
+                            | # However, we split our stack pointer off into another value, valE, which is separate from %rsp and
+                            | # we decremented THAT value in the execute stage. %rsp is still left to be updated in the writeback stage.
+                            | # Our next instruction still requires the updated value of %rsp. This is where fowarding helps.
+                            | # Even though %rsp has not been updated, we can still forward the value of the decremented stack pointer
+                            | # (stored in valE) to the next instruction that requires the new stack pointer value.
+                            | # The program below shows that this works flawlessly.
+                            | #
+                            | # Note that the pushq instruction does finish writing back the value of %rsp
+                            | # until the start of cycle 8, after the rrmovq and popq instruction have already finished the execute stage.
+                            | #
+0x000: 30f42d00000000000000 |   irmovq stack,%rsp     #   Initialize stack pointer (0x25)
+0x00a: 2048                 |   rrmovq %rsp, %r8      #   copy stack pointer to register r8
+0x00c: 30f00c00000000000000 |   irmovq $12, %rax      #   set %rax to 12
+0x016: a00f                 |   pushq %rax            #   push %rax to stack
+0x018: 2049                 |   rrmovq %rsp, %r9      #   we can see that the value in r9 is the value of the NEW stack pointer!
+0x01a: b0af                 |   popq %r10             #   save value at stack pointer to %r10, this also has the right value of %rsp
+0x01c: 00                   |   halt
+0x01d: 0000000000000000     | .quad 0000000000000000  # allocate some zeroed-out memory
+0x025: 0000000000000000     | mem:	.quad 0000000000000000
+0x02d:                      | stack:

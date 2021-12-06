@@ -1,2 +1,29 @@
-# Design your own testcase here
-halt
+# This program explores the details of the Y86 convention when pushing data to stack.
+# Normally, we would immediately decrement %rsp and then write to M[R[%rsp]].
+# However, due to the structure of our pipeline, %rsp should only be updated in the writeback stage.
+#
+# In a suboptimal pipeline where data dependencies were not considered, this could cause a problem.
+# If we had two consecutive operations, one being a pushq, and then an operation that
+# reads the value of %rsp, then the pushq operation would not have time to reach the
+# writeback stage and update the stack pointer. Therefore the value read from %rsp would be incorrect.
+#
+# However, we split our stack pointer off into another value, valE, which is separate from %rsp and
+# we decremented THAT value in the execute stage. %rsp is still left to be updated in the writeback stage.
+# Our next instruction still requires the updated value of %rsp. This is where fowarding helps.
+# Even though %rsp has not been updated, we can still forward the value of the decremented stack pointer
+# (stored in valE) to the next instruction that requires the new stack pointer value.
+# The program below shows that this works flawlessly.
+#
+# Note that the pushq instruction does finish writing back the value of %rsp
+# until the start of cycle 8, after the rrmovq and popq instruction have already finished the execute stage.
+#
+  irmovq stack,%rsp     #   Initialize stack pointer (0x25)
+  rrmovq %rsp, %r8      #   copy stack pointer to register r8
+  irmovq $12, %rax      #   set %rax to 12
+  pushq %rax            #   push %rax to stack
+  rrmovq %rsp, %r9      #   we can see that the value in r9 is the value of the NEW stack pointer!
+  popq %r10             #   save value at stack pointer to %r10, this also has the right value of %rsp
+  halt
+.quad 0000000000000000  # allocate some zeroed-out memory
+mem:	.quad 0000000000000000
+stack:

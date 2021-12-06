@@ -21,6 +21,8 @@ test-pipe-cache:
 cache-bonus:
 	./btest.pl -c -s ../pipe-cache/pcsim
 
+op-bonus:
+	./boptest.pl -s ../pipe/psim
 
 clean:
 	rm -f *.o *~ *.yo *.ys

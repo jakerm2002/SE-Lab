@@ -662,6 +662,33 @@ void do_fetch_stage()
             fetch_input->predPC = decode_input->valp;
             break;
 
+        case HPACK(I_LEAQ, F_NONE):
+            imem_error |= !get_byte_val(mem, f_pc + 1, &byte1);
+            decode_input->ra = HI4(byte1);
+            decode_input->rb = LO4(byte1);
+            imem_error |= !get_word_val(mem, f_pc + 2, &decode_input->valc);
+            decode_input->valp = f_pc + 10;
+            fetch_input->predPC = decode_input->valp;
+            break;
+
+        case HPACK(I_VECADD, F_NONE):
+            imem_error |= !get_byte_val(mem, f_pc + 1, &byte1);
+            decode_input->ra = HI4(byte1);
+            decode_input->rb = LO4(byte1);
+            decode_input->valp = f_pc + 2;
+            fetch_input->predPC = decode_input->valp;
+            break;
+
+        case HPACK(I_SHF, S_HL):
+        case HPACK(I_SHF, S_HR):
+        case HPACK(I_SHF, S_AR):
+            imem_error |= !get_byte_val(mem, f_pc + 1, &byte1);
+            decode_input->ra = HI4(byte1);
+            decode_input->rb = LO4(byte1);
+            decode_input->valp = f_pc + 2;
+            fetch_input->predPC = decode_input->valp;
+            break;
+
         default:
             decode_input->status = imem_error ? STAT_ADR : STAT_INS;
             instr_valid = false;
@@ -751,6 +778,23 @@ void do_decode_stage()
             execute_input->srcb = REG_RSP;
             execute_input->deste = REG_RSP;
             execute_input->destm = decode_output->ra;
+            break;
+
+        case I_LEAQ:
+            execute_input->srcb = decode_output->rb;
+            execute_input->deste = decode_output->ra;
+            break;
+
+        case I_VECADD:
+            execute_input->srca = decode_output->ra;
+            execute_input->srcb = decode_output->rb;
+            execute_input->deste = decode_output->rb;
+            break;
+
+        case I_SHF:
+            execute_input->srca = decode_output->ra;
+            execute_input->srcb = decode_output->rb;
+            execute_input->deste = decode_output->rb;
             break;
 
         default:
@@ -902,6 +946,48 @@ void do_execute_stage()
             memory_input->vale = execute_output->valb + 8;
             break;
 
+        case I_LEAQ:
+            alua = execute_output->valc;
+            alub = execute_output->valb;
+            memory_input->vale = execute_output->valb + execute_output->valc;
+            break;
+
+        case I_VECADD:
+            alua = execute_output->vala;
+            alub = execute_output->valb;
+
+            //uses code already included in isa.c
+            int j = 1;
+            int x = 0;
+            word_t out = 0;
+            char* v = (char*)&execute_output->vala;
+            char* t = (char*)&execute_output->valb;
+            char* u = (char*)&out;
+            for (size_t i = 0; i < 8; i++) {
+                u[i] = v[i] + t[i];
+                j &= (u[i] == 0);
+                x |= ((u[i] >> 7) != 0);
+            }
+            memory_input->vale = out;
+            setcc = true;
+            cc_in = PACK_CC(j, x, 0);
+            break;
+
+        case I_SHF:
+            alua = execute_output->vala;
+            alub = execute_output->valb;
+            if (execute_output->ifun == S_HL) {
+                memory_input->vale = execute_output->valb << execute_output->vala;
+            } else if (execute_output->ifun == S_HR) {
+                memory_input->vale = ((unsigned long long)execute_output->valb) >> execute_output->vala;
+            } else if (execute_output->ifun == S_AR) {
+                memory_input->vale = execute_output->valb >> execute_output->vala;
+            }
+            setcc = true;
+            //uses code already included in isa.c
+            cc_in = PACK_CC(!memory_input->vale, (memory_input->vale >> 63) & 0x1, 0);
+            break;
+
         default:
             printf("icode is not valid (%d)", execute_output->icode);
             break;
@@ -1002,6 +1088,12 @@ void do_memory_stage()
             mem_dest = &writeback_input->valm;
             // dmem_error |= !get_word_val(mem, mem_addr, &mem_data);
             break;
+
+        case I_LEAQ: break;
+
+        case I_VECADD: break;
+
+        case I_SHF: break;
 
         default:
             printf("icode is not valid (%d)", memory_output->icode);

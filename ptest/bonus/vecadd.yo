@@ -1,0 +1,16 @@
+0x000: 30f0ffffffffffffffff | irmovq $0xFFFFFFFFFFFFFFFF, %rax
+0x00a: 30f30101010101010101 | irmovq $0x0101010101010101, %rbx
+0x014: d030                 | vecadd %rbx, %rax
+0x016: 732000000000000000   | je target
+0x01f: 00                   | halt
+0x020:                      | target:
+0x020: 30f1000000000000007f | irmovq $0x7F00000000000000, %rcx
+0x02a: 30f21100111111111101 | irmovq $0x0111111111110011, %rdx
+0x034: d012                 | vecadd %rcx, %rdx
+0x036: 724000000000000000   | jl passed
+0x03f: 00                   | halt
+0x040:                      | passed:
+0x040: 30f921436587a9cbed0f | irmovq $0x0fedcba987654321, %r9
+0x04a: 30faf0debc9a78563412 | irmovq $0x123456789abcdef0, %r10
+0x054: d09a                 | vecadd %r9, %r10
+0x056: 00                   | halt
